@@ -218,7 +218,7 @@ The platform is specifically designed for **India**, with:
 ### Directory Structure
 
 ```
-saarthi/
+AI-DisasterManagement/
 ├── 📁 public/
 │   ├── icon-192x192.png      # PWA icon (small)
 │   ├── icon-512x512.png      # PWA icon (large)
@@ -310,9 +310,8 @@ saarthi/
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
-cd saarthi
-
+git clone https://github.com/jaidevxr/AI-DisasterManagement.git
+cd saarthiAI-DisasterManagement
 # 2. Install dependencies
 npm install
 # or
