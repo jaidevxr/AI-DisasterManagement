@@ -60,7 +60,7 @@
 
 ### 🎯 Mission
 
-To provide every Indian citizen with accessible, reliable, and intelligent disaster preparedness tools that work even in the most challenging conditions—including areas with poor connectivity.
+To provide every Indian citizen with accessible, reliable, and intelligent disaster preparedness tools that work even in the most challenging conditions-including areas with poor connectivity.
 
 ### 🌍 Focus Area
 
