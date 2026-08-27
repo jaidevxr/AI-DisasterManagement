@@ -1,0 +1,41 @@
+name: Keep Supabase Awake
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC to ensure Supabase never auto-pauses
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab anytime
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API
+        run: |
+          RAW_URL="${{ secrets.SUPABASE_URL }}"
+          KEY="${{ secrets.SUPABASE_ANON_KEY }}"
+
+          if [ -z "$RAW_URL" ] || [ -z "$KEY" ]; then
+            echo "::error::SUPABASE_URL or SUPABASE_ANON_KEY secret is missing in GitHub Repository Secrets!"
+            exit 1
+          fi
+
+          # Clean URL: strip http://, https://, trailing slashes, and white spaces
+          CLEAN_HOST=$(echo "$RAW_URL" | sed -e 's|^https://||' -e 's|^http://||' -e 's|/*$||' | tr -d '[:space:]')
+          TARGET_URL="https://${CLEAN_HOST}/rest/v1/"
+
+          echo "Pinging target endpoint..."
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 \
+            -H "apikey: ${KEY}" \
+            -H "Authorization: Bearer ${KEY}" \
+            "$TARGET_URL" || echo "CURL_ERR")
+
+          echo "Supabase HTTP Response Status Code: $STATUS"
+
+          if [ "$STATUS" = "CURL_ERR" ]; then
+            echo "::error::Curl command failed. Check if SUPABASE_URL is valid."
+            exit 1
+          else
+            echo "Successfully reached Supabase project! (HTTP $STATUS)"
+          fi
